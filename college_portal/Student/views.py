@@ -62,7 +62,7 @@ def dashboard(request):
 def user_logout(request):
     if request.method=='POST':
         logout(request)
-        return render(request,'logout.html')
+        return HttpResponse("you have loged out sucessfully!")
     return HttpResponse("Invalid request")
 
 from rest_framework.decorators import api_view
