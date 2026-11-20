@@ -64,26 +64,41 @@ def user_logout(request):
         logout(request)
         return render(request,'logout.html')
     return HttpResponse("Invalid request")
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from.models import Student_table
-from.serializers import Studentserializer
-@api_view(['GET','POST'])
-def Student_api(requet):
+
+from .models import Student_table
+from .serializers import Studentserializer
+
+
+@api_view(['GET', 'POST'])
+def Student_api(request):
+
+    # GET method - Fetch all students
     if request.method == 'GET':
-        Student = Student table.objects.all()
-        serializer = Studentserializer(Students,many=True)
-        return Response(serializer.data,status=status.HTTP_200_OK)
-    elif request.method == 'POST':
-        serializer=studebtSerializer(data=request.data)
-        if serializer.is valid():
-            serializer.save()
-            return Response(
-                serializer.data,
-                status=status.HTTP 201 CREATED
-            )
+        students = Student_table.objects.all()
+        serializers = Studentserializer(students, many=True)
+
         return Response(
-            serializer.errors,
-            status=status.HTTP 400 BAD REQUEST
+            serializers.data,
+            status=status.HTTP_200_OK
+        )
+
+    # POST method - Create a new student
+    elif request.method == 'POST':
+        serializers = Studentserializer(data=request.data)
+
+        if serializers.is_valid():
+            serializers.save()
+
+            return Response(
+                serializers.data,
+                status=status.HTTP_201_CREATED
+            )
+
+        return Response(
+            serializers.errors,
+            status=status.HTTP_400_BAD_REQUEST
         )
